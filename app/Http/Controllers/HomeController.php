@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Post;
+use App\Http\Requests\StoreBlogPost;
 
 class HomeController extends Controller
 {
@@ -23,6 +25,43 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return view('admin.home');
     }
+
+    public function posts()
+    {
+        $posts = Post::orderBy('created_at', 'desc')->paginate(15);
+        return view('admin.posts', compact('posts'));
+    }
+
+    public function edit(Post $post)
+    {
+        return view('admin.edit', compact('post'));
+    }
+
+    public function update(StoreBlogPost $request, Post $post)
+    {
+        $validated = $request->validated();
+        $post->update($validated);
+        return redirect()->route('admin.edit', $post->id);
+    }
+
+    public function destroy(Request $request, Post $post)
+    {
+        // return $request->input('post');
+        
+        if(is_null($post->id)){
+            foreach ($request->input('post') as $key => $value) {
+                Post::find($key)->delete();
+            }    
+        } else {
+            $post->delete();
+        }
+
+        // return redirect()->route('admin.posts');
+        return response()->json([
+            'result' => 'ok'
+        ]);
+    }
+
 }

@@ -21,4 +21,10 @@ Route::get('/', function () {
 Auth::routes();
 Route::resource('posts', 'PostController');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::prefix('admin')->name("admin.")->group(function(){
+    Route::get('/', 'HomeController@index')->name('home');
+    Route::get('/posts', 'HomeController@posts')->name('posts');
+    Route::get('/posts/{post}/edit', 'HomeController@edit')->name('edit');
+    Route::put('/posts/{post}', 'HomeController@update')->name('update');
+    Route::delete('/posts/{post?}', 'HomeController@destroy')->name('destroy');
+});

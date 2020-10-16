@@ -64,6 +64,7 @@
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
+                                    <a href="{{ route('admin.home') }}" class="dropdown-item">마이페이지</a>
                                     <a href="{{ route('posts.create') }}" class="dropdown-item">글쓰기</a>
                                 </div>
                             </li>

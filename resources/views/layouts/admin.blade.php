@@ -9,7 +9,7 @@
                     <a href="">대시보드</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="">게시글관리</a>
+                    <a href="{{ route('admin.posts') }}">게시글관리</a>
                 </li>
                 <li class="list-group-item">
                     <a href="">정보수정</a>
@@ -19,15 +19,8 @@
         <div class="col-md-10">
             <div class="card">
                 <div class="card-header">{{ __('Dashboard') }}</div>
-
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    {{ __('You are logged in') }}
+                    @yield('admin_content')
                 </div>
             </div>
         </div>
