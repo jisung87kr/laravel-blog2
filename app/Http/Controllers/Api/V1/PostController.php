@@ -1,31 +1,26 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\PostController as ParentController;
 use App\Post;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreBlogPost;
-use Illuminate\Support\Facades\Gate;
 
-class PostController extends Controller
+class PostController extends ParentController
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        // $posts = Post::paginate(15)->appends(request()->query());
-        $posts = Post::orderBy('updated_at', 'desc')->paginate(15);
-        return $this->respondCollection($posts);
-        // return view('posts.index', compact('posts'));
-    }
-
     protected function respondCollection($posts)
     {
-        return view('posts.index', compact('posts'));
+        
+        return $posts->toJson(JSON_PRETTY_PRINT);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -34,9 +29,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        Gate::authorize('create-post');
-        $post = new Post();
-        return view('posts.create', compact('post'));
+        //
     }
 
     /**
@@ -47,10 +40,7 @@ class PostController extends Controller
      */
     public function store(StoreBlogPost $request)
     {
-        Gate::authorize('create-post');
-        $validated = $request->validated();
-        $post = $request->user()->posts()->create($validated);
-        return redirect()->route('posts.show', $post->id);
+        //
     }
 
     /**
@@ -61,7 +51,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return view('posts.show', compact('post'));
+        //
     }
 
     /**
@@ -72,8 +62,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        Gate::authorize('update-post', $post);
-        return view('posts.edit', compact('post'));
+        //
     }
 
     /**
@@ -85,10 +74,7 @@ class PostController extends Controller
      */
     public function update(StoreBlogPost $request, Post $post)
     {
-        Gate::authorize('update-post', $post);
-        $validated = $request->validated();
-        $post->update($validated);
-        return redirect()->route('posts.show', $post->id);
+        //
     }
 
     /**
@@ -99,8 +85,6 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        Gate::authorize('delete-post', $post);
-        $post->delete();
-        return redirect()->route('posts.index');
+        //
     }
 }

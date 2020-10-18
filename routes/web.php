@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Resources\User as UserResource;
+use App\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +23,10 @@ Route::get('/', function () {
 Auth::routes();
 Route::resource('posts', 'PostController');
 
+Route::get('/user', function () {
+    return new UserResource(User::find(1));
+});
+
 Route::prefix('admin')->name("admin.")->group(function(){
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('/posts', 'HomeController@posts')->name('posts');
@@ -29,4 +35,11 @@ Route::prefix('admin')->name("admin.")->group(function(){
     Route::delete('/posts/{post?}', 'HomeController@destroy')->name('destroy');
     Route::get('/account', 'HomeController@account')->name('account');
     Route::post('/account', 'HomeController@accountUpdate')->name('account_update');
+});
+
+Route::namespace('Api')->prefix('api')->name('api.')->group(function(){
+    Route::namespace('V1')->prefix('v1')->name('v1.')->group(function(){
+        //리소트관련 라우트
+        Route::resource('posts', 'PostController');
+    });
 });
