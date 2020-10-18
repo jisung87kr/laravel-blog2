@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Post;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreBlogPost;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -27,6 +28,7 @@ class PostController extends Controller
      */
     public function create()
     {
+        Gate::authorize('create-post');
         $post = new Post();
         return view('posts.create', compact('post'));
     }
@@ -39,6 +41,7 @@ class PostController extends Controller
      */
     public function store(StoreBlogPost $request)
     {
+        Gate::authorize('create-post');
         $validated = $request->validated();
         $post = $request->user()->posts()->create($validated);
         return redirect()->route('posts.show', $post->id);
@@ -63,6 +66,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        Gate::authorize('update-post', $post);
         return view('posts.edit', compact('post'));
     }
 
@@ -75,6 +79,7 @@ class PostController extends Controller
      */
     public function update(StoreBlogPost $request, Post $post)
     {
+        Gate::authorize('update-post', $post);
         $validated = $request->validated();
         $post->update($validated);
         return redirect()->route('posts.show', $post->id);
@@ -88,6 +93,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        Gate::authorize('delete-post', $post);
         $post->delete();
         return redirect()->route('posts.index');
     }

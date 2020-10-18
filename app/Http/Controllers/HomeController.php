@@ -67,16 +67,16 @@ class HomeController extends Controller
         ]);
     }
 
-    public function account()
+    public function account(Request $request)
     {
-        $user = Auth::user();
+        $user = $request->user();
         return view('admin.account', compact('user'));
     }
 
     public function accountUpdate(UpdateAdminAccount $request)
     {
         $validated = $request->validated();
-        $user = Auth::user();
+        $user = $request->user();
         $user->update([
             'name' => $validated['name'],
         ]);

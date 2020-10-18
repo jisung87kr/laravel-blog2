@@ -10,7 +10,7 @@
             </div>
             <div class="card-footer">
                 <a href="{{ route('posts.index', ['page'=>request()->query('page')]) }}" class="btn btn-primary">목록</a>
-                <a href="{{ route('posts.edit', [$post->id, 'page'=>request()->query('page')]) }}" class="btn btn-primary">수정</a>
+                <a href="{{ route('posts.edit', [$post->id, 'page'=>request()->query('page')]) }}" class="btn btn-secondary">수정</a>
                 <a href="" onclick="event.preventDefault();
                 document.getElementById('post-delete').submit();"  class="btn btn-danger">삭제</a>
                 <form action="{{ route('posts.destroy', $post->id) }}" method="post" id="post-delete">
