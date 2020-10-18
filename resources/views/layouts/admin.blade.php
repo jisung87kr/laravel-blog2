@@ -12,7 +12,7 @@
                     <a href="{{ route('admin.posts') }}">게시글관리</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="">정보수정</a>
+                    <a href="{{ route('admin.account') }}">정보수정</a>
                 </li>
             </ul>
         </div>

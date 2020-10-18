@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
+use App\User;
 use App\Http\Requests\StoreBlogPost;
+use App\Http\Requests\UpdateAdminAccount;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -62,6 +65,23 @@ class HomeController extends Controller
         return response()->json([
             'result' => 'ok'
         ]);
+    }
+
+    public function account()
+    {
+        $user = Auth::user();
+        return view('admin.account', compact('user'));
+    }
+
+    public function accountUpdate(UpdateAdminAccount $request)
+    {
+        $validated = $request->validated();
+        $user = Auth::user();
+        $user->update([
+            'name' => $validated['name'],
+        ]);
+
+        return redirect()->route('admin.account');
     }
 
 }
