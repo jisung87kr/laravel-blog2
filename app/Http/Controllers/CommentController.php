@@ -6,9 +6,13 @@ use App\Comment;
 use App\Post;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class CommentController extends Controller
 {
+    public function __construct(){
+        // $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -37,6 +41,7 @@ class CommentController extends Controller
      */
     public function store(Request $request, Post $post)
     {
+        Gate::authorize('create-comment');
         $user = $request->user();
         $post->comments()->create([
             'user_id' => $user->id,
@@ -76,7 +81,7 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
-        //
+        Gate::authorize('update-comment', $comment);
     }
 
     /**
@@ -87,6 +92,8 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        Gate::authorize('delete-comment', $comment);
+        $comment->delete();
+        return redirect()->back();
     }
 }

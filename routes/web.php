@@ -45,3 +45,4 @@ Route::namespace('Api')->prefix('api')->name('api.')->group(function(){
 });
 
 Route::resource('/posts.comments', 'CommentController')->only(['store']);
+Route::resource('/comments', 'CommentController')->only(['update', 'destroy']);

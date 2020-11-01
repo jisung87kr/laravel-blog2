@@ -39,6 +39,12 @@
                     <div class="card-body">
                         <div class="small">{{ $comment->user->name }} | {{ $comment->created_at->diffForHumans() }}</div>
                         <p class="card-text">{{ $comment->content }}</p>
+                        <a href="" class="btn btn-primary btn-sm">수정</a>
+                        <a href="{{ route('comments.destroy', ['comment' => $comment->id] ) }}" class="btn btn-danger btn-sm" onclick="event.preventDefault(); document.getElementById('delete-comment-{{ $loop->index }}').submit()">삭제</a>
+                        <form action="{{ route('comments.destroy', ['comment' => $comment->id]) }}" method="POST" id="delete-comment-{{ $loop->index }}">
+                            @csrf
+                            @method('delete')
+                        </form>
                     </div>
                 </div>
             @endforeach

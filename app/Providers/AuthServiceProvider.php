@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Policies\PostPolicy;
+use App\Policies\CommentPolicy;
 use App\Post;
+use App\Comment;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -17,6 +19,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         // 'App\Model' => 'App\Policies\ModelPolicy',
         Post::class => PostPolicy::class,
+        Comment::class => CommentPolicy::class,
     ];
 
     /**
@@ -33,5 +36,11 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('update-post', 'App\Policies\PostPolicy@update');
 
         Gate::define('delete-post', 'App\Policies\PostPolicy@delete');
+
+        Gate::define('create-comment', 'App\Policies\CommentPolicy@create');
+
+        Gate::define('update-comment', 'App\Policies\CommentPolicy@update');
+
+        Gate::define('delete-comment', 'App\Policies\CommentPolicy@delete');
     }
 }
