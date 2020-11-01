@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Comment;
 use App\Post;
 use App\User;
+use App\Http\Requests\StoreComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Arr;
 
 class CommentController extends Controller
 {
@@ -39,14 +41,13 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Post $post)
+    public function store(StoreComment $request, Post $post)
     {
-        Gate::authorize('create-comment');
         $user = $request->user();
-        $post->comments()->create([
-            'user_id' => $user->id,
-            'content' => $request->input('content'),
-        ]);
+        Gate::authorize('create-comment');
+        $validated = $request->validated();
+        $validated['user_id'] = $user->id;
+        $post->comments()->create($validated);
         return redirect()->back();
     }
 
@@ -79,9 +80,12 @@ class CommentController extends Controller
      * @param  \App\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Comment $comment)
+    public function update(StoreComment $request, Comment $comment)
     {
         Gate::authorize('update-comment', $comment);
+        $validated = $request->validated();
+        $comment->update($validated);
+        return redirect()->back();
     }
 
     /**
