@@ -21,6 +21,7 @@ class CreateCommentsTable extends Migration
             $table->longText('content');
             $table->bigInteger('parent')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

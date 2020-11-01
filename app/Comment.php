@@ -3,13 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Comment extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = ['user_id', 'commentable_id', 'commentable_type', 'content', 'parent', 'created_at', 'published_at'];
     protected $with = ['post', 'user'];
     // protected $dates = ['created_at', 'updated_at', 'deleted_at'];
-
     public function commentable()
     {
         return $this->morphTo();
