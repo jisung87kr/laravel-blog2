@@ -19,5 +19,29 @@
                 </form>
             </div>
         </div>
+
+        <div id="commentbox" class="mt-5">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h4 class="card-title">댓글입력</h4>
+                    <form action="{{ route('posts.comments.store', $post->id) }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <textarea class="form-control" name="content" id="" rows="3"></textarea>
+                        </div>
+                        <input type="submit" value="댓글등록" class="btn btn-primary">
+                    </form>
+                </div>
+            </div>
+
+            @foreach ($comments as $comment)
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="small">{{ $comment->user->name }} | {{ $comment->created_at->diffForHumans() }}</div>
+                        <p class="card-text">{{ $comment->content }}</p>
+                    </div>
+                </div>
+            @endforeach
+        </div>
     </div>
 @endsection

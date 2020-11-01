@@ -39,7 +39,9 @@ Route::prefix('admin')->name("admin.")->group(function(){
 
 Route::namespace('Api')->prefix('api')->name('api.')->group(function(){
     Route::namespace('V1')->prefix('v1')->name('v1.')->group(function(){
-        //리소트관련 라우트
+        //리소스 관련 라우트
         Route::resource('posts', 'PostController');
     });
 });
+
+Route::resource('/posts.comments', 'CommentController')->only(['store']);
