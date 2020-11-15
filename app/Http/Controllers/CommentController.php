@@ -47,6 +47,7 @@ class CommentController extends Controller
         Gate::authorize('create-comment');
         $validated = $request->validated();
         $validated['user_id'] = $user->id;
+        $validated['parent'] = $request->parent;
         $post->comments()->create($validated);
         return redirect()->back();
     }

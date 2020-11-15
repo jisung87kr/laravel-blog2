@@ -64,7 +64,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        $comments = $post->comments;
+        $comments = $post->comments()->where('parent', null)->get();
         return view('posts.show', compact('post', 'comments'));
     }
 

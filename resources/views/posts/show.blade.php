@@ -24,37 +24,28 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <h4 class="card-title">댓글입력</h4>
-                    <form action="{{ route('posts.comments.store', $post->id) }}" method="POST">
-                        @csrf
-                        <div class="form-group">
-                            <textarea class="form-control" name="content" id="" rows="3"></textarea>
-                        </div>
-                        <input type="submit" value="댓글등록" class="btn btn-primary">
-                    </form>
+                    @include('posts/comments/write', [
+                        'parent' => null,
+                        'top' => true,
+                        ])
                 </div>
             </div>
 
             @foreach ($comments as $comment)
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <div class="small">{{ $comment->user->name }} | {{ $comment->created_at->diffForHumans() }}</div>
-                        <p class="card-text">{{ $comment->content }}</p>
-                        <form action="{{ route('comments.update', $comment->id) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <textarea name="content" id="" class="form-control" cols="30" rows="5">{{ $comment->content }}</textarea>
-                            <input type="submit" value="저장" class="btn btn-primary btn-sm m-3">
-                        </form>
-
-                        <a href="" class="btn btn-primary btn-sm">수정</a>
-                        <a href="{{ route('comments.destroy', ['comment' => $comment->id] ) }}" class="btn btn-danger btn-sm" onclick="event.preventDefault(); document.getElementById('delete-comment-{{ $loop->index }}').submit()">삭제</a>
-                        <form action="{{ route('comments.destroy', ['comment' => $comment->id]) }}" method="POST" id="delete-comment-{{ $loop->index }}">
-                            @csrf
-                            @method('delete')
-                        </form>
-                    </div>
-                </div>
+                @include('posts/comments/comment', [
+                    'comment' => $comment,
+                    'parent' => $comment->id,
+                    'depth' => $loop->depth,
+                ])
             @endforeach
         </div>
+        <script>
+            window.addEventListener('load', function(){
+                $(".btn-modify").click(function(e){
+                    e.preventDefault();
+                    $(this).siblings('form').toggle();
+                });
+            })
+        </script>
     </div>
 @endsection
